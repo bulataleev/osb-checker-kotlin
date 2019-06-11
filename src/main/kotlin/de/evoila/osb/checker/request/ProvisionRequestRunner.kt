@@ -63,7 +63,7 @@ class ProvisionRequestRunner(
         .header(Header("Authorization", configuration.correctToken))
         .contentType(ContentType.JSON)
         .body(requestBody)
-        .put("/v2/service_instances/$instanceId?accepts_incomplete=true")
+        .put("/v2/service_instances/$instanceId")//?accepts_incomplete=true
         .then()
         .log().all()
         .assertThat()
@@ -133,7 +133,7 @@ class ProvisionRequestRunner(
 
   fun runDeleteProvisionRequestAsync(instanceId: String, serviceId: String?, planId: String?): Int {
 
-    var path = "/v2/service_instances/$instanceId?accepts_incomplete=true"
+    var path = "/v2/service_instances/$instanceId"//?accepts_incomplete=true
 
     path = serviceId?.let { "$path&service_id=$serviceId" } ?: path
     path = planId?.let { "$path&plan_id=$planId" } ?: path
@@ -154,7 +154,7 @@ class ProvisionRequestRunner(
     RestAssured.with()
         .log().ifValidationFails()
         .header(Header("Authorization", configuration.correctToken))
-        .put("/v2/service_instances/${Configuration.NOT_AN_ID}?accepts_incomplete=true")
+        .put("/v2/service_instances/${Configuration.NOT_AN_ID}")//?accepts_incomplete=true
         .then()
         .log().ifValidationFails()
         .assertThat()
