@@ -44,7 +44,7 @@ class ProvisionJUnit5 : TestBase() {
   }
 
   @TestFactory
-  fun runInvalidAsyncPutTest(): List<DynamicNode> {
+  fun runInvalidSyncPutTest(): List<DynamicNode> {
 
     val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
     val service = catalog.services.first()
@@ -119,7 +119,7 @@ class ProvisionJUnit5 : TestBase() {
   }
 
   @TestFactory
-  fun runInvalidAsyncDeleteTest(): List<DynamicNode> {
+  fun runInvalidSyncDeleteTest(): List<DynamicNode> {
 
     val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
     val service = catalog.services.first()
