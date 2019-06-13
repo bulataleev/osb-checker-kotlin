@@ -12,9 +12,22 @@ import org.springframework.stereotype.Service
 import kotlin.test.assertTrue
 
 @Service
-class ProvisionRequestRunner(
-    val configuration: Configuration
-) {
+class ProvisionRequestRunner( val configuration: Configuration ) {
+
+  fun runFetchProvisionRequestSync(instanceId: String): Int {
+    return RestAssured.with()
+            .log().ifValidationFails()
+            .header(Header("X-Broker-API-Version", configuration.apiVersion))
+            .header(Header("Authorization", configuration.correctToken))
+            .contentType(ContentType.JSON)
+            .get("/v2/service_instances/$instanceId")
+            .then()
+            .log().ifValidationFails()
+            .assertThat()
+            .extract()
+            .statusCode()
+  }
+
 
   fun getProvision(instanceId: String, retrievable: Boolean): ServiceInstance? {
     val response = RestAssured.with()
@@ -36,7 +49,6 @@ class ProvisionRequestRunner(
 
       return response.jsonPath().getObject("", ServiceInstance::class.java)
     } else {
-
       null
     }
   }
