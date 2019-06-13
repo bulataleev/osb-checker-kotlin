@@ -163,17 +163,19 @@ class BindingJUnit5 : TestBase() {
                         assertTrue("Expected the final polling state to be \"succeeded\" but was $state") { "succeeded" == state }
                     }
                 }
-
         )
 
         return dynamicContainer("Running PUT binding and DELETE binding afterwards", if (isRetrievable) {
-            bindingTests.plus(listOf(validRetrievableBindingContainer(instanceId, bindingId), validDeleteContainer(binding, instanceId, bindingId)))
+            bindingTests.plus(listOf(validRetrievableBindingContainer(instanceId, bindingId),
+                    inValidRetrievableBindingContainer(instanceId, UUID.randomUUID().toString()),
+                    validDeleteContainer(binding, instanceId, bindingId)))
         } else {
             bindingTests.plus(validDeleteContainer(binding, instanceId, bindingId))
         })
     }
 
-    private fun validDeleteContainer(binding: BindingBody, instanceId: String, bindingId: String): DynamicTest = dynamicTest("Deleting binding with bindingId $bindingId") {
+    private fun validDeleteContainer(binding: BindingBody, instanceId: String, bindingId: String):
+            DynamicTest = dynamicTest("Deleting binding with bindingId $bindingId") {
         val statusCode = bindingRequestRunner.runDeleteBindingRequest(binding.service_id, binding.plan_id, instanceId, bindingId)
 
         assertTrue("StatusCode should be 200 or 202 but was $statusCode.") { statusCode in listOf(200, 202) }
@@ -187,6 +189,12 @@ class BindingJUnit5 : TestBase() {
 
         return dynamicTest("Running valid GET for retrievable service binding") {
             bindingRequestRunner.runGetBindingRequest(200, instanceId, bindingId)
+        }
+    }
+    private fun inValidRetrievableBindingContainer(instanceId: String, bindingId: String): DynamicTest {
+
+        return dynamicTest("Running valid GET for retrievable NOT existing service binding") {
+            bindingRequestRunner.runGetBindingRequest(404, instanceId, bindingId)
         }
     }
 
