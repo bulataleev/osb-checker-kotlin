@@ -110,13 +110,13 @@ class ProvisionJUnit5 : TestBase() {
                         requestBody = ProvisionBody.ValidProvisioning(
                                 "Invalid", plan.id
                         ),
-                        message = "should reject if missing service_id is Invalid"
+                        message = "should reject if service_id is Invalid"
                 ),
                 TestCase(
                         requestBody = ProvisionBody.ValidProvisioning(
                                 service.id, "Invalid"
                         ),
-                        message = "should reject if missing plan_id is Invalid"
+                        message = "should reject if plan_id is Invalid"
                 )
         ).forEach {
             dynamicNodes.add(
