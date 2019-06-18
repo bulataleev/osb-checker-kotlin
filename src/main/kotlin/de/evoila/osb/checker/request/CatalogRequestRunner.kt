@@ -21,7 +21,7 @@ class CatalogRequestRunner(
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun correctRequestAndValidateResponse() {

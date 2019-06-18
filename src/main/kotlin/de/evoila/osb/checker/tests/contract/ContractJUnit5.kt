@@ -21,19 +21,19 @@ class ContractJUnit5 : TestBase() {
     return listOf(
         DynamicContainer.dynamicContainer("Requests should contain header X-Broker-API-Version",
             listOf(
-                dynamicTest("GET - v2/catalog should reject with 412")
+                dynamicTest("GET - v2/catalog should reject with 400")
                 { catalogRequestRunner.withoutHeader() },
-                dynamicTest("PUT - v2/service_instance/instance_id should reject with 412")
+                dynamicTest("PUT - v2/service_instance/instance_id should reject with 400")
                 { provisionRequestRunner.putWithoutHeader() },
-                dynamicTest("DELETE - v2/service_instance/instance_id should reject with 412")
+                dynamicTest("DELETE - v2/service_instance/instance_id should reject with 400")
                 { provisionRequestRunner.deleteWithoutHeader() },
-                dynamicTest("GET - v2/service_instance/instance_id/last_operation should reject with 412")
+                dynamicTest("GET - v2/service_instance/instance_id/last_operation should reject with 400")
                 { provisionRequestRunner.lastOperationWithoutHeader() },
-                dynamicTest("DELETE - v2/service_instance/instance_id?service_id=Invalid&plan_id=Invalid  should reject with 412)")
+                dynamicTest("DELETE - v2/service_instance/instance_id?service_id=Invalid&plan_id=Invalid  should reject with 400)")
                 { provisionRequestRunner.deleteWithoutHeader() },
-                dynamicTest("PUT - v2/service_instance/instance_id/service_binding/binding_id  should reject with 412)")
+                dynamicTest("PUT - v2/service_instance/instance_id/service_binding/binding_id  should reject with 400)")
                 { bindingRequestRunner.putWithoutHeader() },
-                dynamicTest("DELETE - v2/service_instance/instance_id/service_binding/binding_id?service_id=Invalid&plan_id=Invalid should reject with 412")
+                dynamicTest("DELETE - v2/service_instance/instance_id/service_binding/binding_id?service_id=Invalid&plan_id=Invalid should reject with 400")
                 { bindingRequestRunner.deleteWithoutHeader() }
             )
         )

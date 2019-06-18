@@ -119,7 +119,7 @@ class BindingRequestRunner(
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun deleteWithoutHeader() {
@@ -130,7 +130,7 @@ class BindingRequestRunner(
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun putNoAuth() {

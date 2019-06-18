@@ -170,7 +170,7 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun deleteWithoutHeader() {
@@ -181,7 +181,7 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun lastOperationWithoutHeader() {
@@ -192,7 +192,7 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
         .then()
         .log().ifValidationFails()
         .assertThat()
-        .statusCode(412)
+        .statusCode(400)
   }
 
   fun putNoAuth() {
