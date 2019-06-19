@@ -99,14 +99,14 @@ class ProvisionJUnit5 : TestBase() {
                                 service_id =UUID.randomUUID().toString(),
                                 plan_id = plan.id
                         ),
-                        message = "should reject if service_id doesn't exist"
+                        message = "should reject if service_id doesn't exist in the service"
                 ),
                 TestCase(
                         requestBody = ProvisionBody.NoOrgFieldProvisioning(
                                 service_id =service.id,
                                 plan_id = UUID.randomUUID().toString()
                         ),
-                        message = "should reject if plan_id doesn't exist"
+                        message = "should reject if plan_id doesn't exist in the service"
                 ),
                 TestCase(
                         requestBody = ProvisionBody.ValidProvisioning(

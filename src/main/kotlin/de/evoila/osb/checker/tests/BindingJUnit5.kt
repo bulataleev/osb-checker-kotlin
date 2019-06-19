@@ -142,7 +142,7 @@ class BindingJUnit5 : TestBase() {
                 listOf(
                         dynamicTest("DELETE provision and if the service broker is async polling afterwards") {
                             val statusCode = provisionRequestRunner.runDeleteProvisionRequestAsync(instanceId, service.id, plan.id)
-                            assertTrue("StatusCode should be 200 or 202 but was $statusCode.") { statusCode in listOf(200, 202) }
+                            assertTrue("StatusCode should be 200 or 202 but was $statusCode.") { statusCode in listOf(400) }
 
                             if (statusCode == 202) {
                                 provisionRequestRunner.waitForFinish(instanceId, 410)
