@@ -96,15 +96,17 @@ class ProvisionJUnit5 : TestBase() {
                 ),
                 TestCase(
                         requestBody = ProvisionBody.NoSpaceFieldProvisioning(
-                                service, plan
+                                service_id =UUID.randomUUID().toString(),
+                                plan_id = plan.id
                         ),
-                        message = "should reject if missing service_id field"
+                        message = "should reject if service_id doesn't exist"
                 ),
                 TestCase(
                         requestBody = ProvisionBody.NoOrgFieldProvisioning(
-                                service, plan
+                                service_id =service.id,
+                                plan_id = UUID.randomUUID().toString()
                         ),
-                        message = "should reject if missing service_id field"
+                        message = "should reject if plan_id doesn't exist"
                 ),
                 TestCase(
                         requestBody = ProvisionBody.ValidProvisioning(
@@ -122,9 +124,8 @@ class ProvisionJUnit5 : TestBase() {
             dynamicNodes.add(
                     DynamicTest.dynamicTest("PUT ${it.message}") {
                         val statusCode = provisionRequestRunner.runPutProvisionRequestAsync(instanceId, it.requestBody)
-                        assertTrue("Expected status code is 400 but was $statusCode") {
-                            400 == statusCode
-                        }
+                        assertTrue("Expected status code is 400 or 409 if conflict but was $statusCode")
+                        { statusCode in listOf(400,409) }
                     }
             )
         }

@@ -72,8 +72,8 @@ class Configuration {
     lateinit var id: String
     var plans = mutableListOf<CustomPlan>()
     var bindable = true
-    var instancesRetrievable = false
-    var bindingRetrievable = false
+    var instancesRetrievable = true
+    var bindingRetrievable = true
 
 
     class CustomPlan {
