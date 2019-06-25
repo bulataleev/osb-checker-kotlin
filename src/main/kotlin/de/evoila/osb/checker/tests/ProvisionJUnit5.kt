@@ -24,6 +24,7 @@ class ProvisionJUnit5 : TestBase() {
         assertTrue("404 MUST be returned if the Service Instance does not exist but was $statusCode instead")
         { statusCode.equals(404)}
     }
+
     @TestFactory
     fun runSyncTest(): List<DynamicNode> {
 
@@ -31,6 +32,7 @@ class ProvisionJUnit5 : TestBase() {
         val instanceId = UUID.randomUUID().toString()
         val service = catalog.services.first()
         val plan = service.plans.first()
+
         val provisionRequestBody = ProvisionBody.ValidProvisioning(service, plan)
         val dynamicNodes = mutableListOf<DynamicNode>()
 
@@ -38,8 +40,9 @@ class ProvisionJUnit5 : TestBase() {
                 dynamicContainer("should handle sync requests correctly", listOf(
                         dynamicTest("Sync PUT request") {
                             val statusCodePut = provisionRequestRunner.runPutProvisionRequestSync(instanceId, provisionRequestBody)
+                            print(" ::: BOdyRequest :::  " +  provisionRequestBody)
                             assertTrue("Should return  201 in case of a sync service broker or 422 if it's async but it was $statusCodePut.")
-                            { statusCodePut in listOf(201, 422) }
+                            { statusCodePut in listOf(201,200) }
                         },
                         dynamicTest("Sync Fetch request") {
                             val statusCodeFetch = provisionRequestRunner.runFetchProvisionRequestSync(instanceId)
@@ -49,7 +52,7 @@ class ProvisionJUnit5 : TestBase() {
                         dynamicTest("Sync DELETE request") {
                             val statusCodePut = provisionRequestRunner.runDeleteProvisionRequestSync(instanceId, provisionRequestBody.service_id, provisionRequestBody.plan_id)
                             assertTrue("Should return  200 in case of a sync Service Broker or 422 if it's async but it was $statusCodePut.")
-                            { statusCodePut in listOf(200, 422) }
+                            { statusCodePut in listOf(200, 410) }
                         }
                 ))
         )
