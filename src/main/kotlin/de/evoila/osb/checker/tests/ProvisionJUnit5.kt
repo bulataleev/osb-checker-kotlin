@@ -41,6 +41,7 @@ class ProvisionJUnit5 : TestBase() {
                 dynamicContainer("should handle sync requests correctly", listOf(
                         dynamicTest("Sync PUT request") {
 
+                            println(" ::: Body request values ::: "+provisionRequestBody.parameters.values.toString())
                             val statusCodePut = provisionRequestRunner.runPutProvisionRequestSync(instanceId, provisionRequestBody)
                             print(" ::: BOdyRequest :::  " +  provisionRequestBody)
                             assertTrue("Should return  201 in case of a sync service broker or 200 if it's already existing but it was $statusCodePut.")
@@ -61,123 +62,123 @@ class ProvisionJUnit5 : TestBase() {
         return dynamicNodes
     }
 
-
-    @TestFactory
-    fun runInvalidSyncPutTest(): List<DynamicNode> {
-
-        val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
-        val service = catalog.services.first()
-        val plan = service.plans.first()
-        val instanceId = UUID.randomUUID().toString()
-
-        val dynamicNodes = mutableListOf<DynamicNode>()
-
-        listOf(
-                TestCase(
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                service_id = null,
-                                plan_id = plan.id
-                        ),
-                        message = "should reject if missing service_id"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                service_id = service.id,
-                                plan_id = null
-                        ),
-                        message = "should reject if missing plan_id"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.NoServiceFieldProvisioning(
-                                service
-                        ),
-                        message = "should reject if missing service_id field"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.NoPlanFieldProvisioning(
-                                plan
-                        ),
-                        message = "should reject if missing plan_id field"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.NoSpaceFieldProvisioning(
-                                service_id =UUID.randomUUID().toString(),
-                                plan_id = plan.id
-                        ),
-                        message = "should reject if service_id doesn't exist in the service"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.NoOrgFieldProvisioning(
-                                service_id =service.id,
-                                plan_id = UUID.randomUUID().toString()
-                        ),
-                        message = "should reject if plan_id doesn't exist in the service"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                "Invalid", plan.id
-                        ),
-                        message = "should reject if service_id is Invalid"
-                ),
-                TestCase(
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                service.id, "Invalid"
-                        ),
-                        message = "should reject if plan_id is Invalid"
-                )
-        ).forEach {
-            dynamicNodes.add(
-                    DynamicTest.dynamicTest("PUT ${it.message}") {
-                        val statusCode = provisionRequestRunner.runPutProvisionRequestAsync(instanceId, it.requestBody)
-                        assertTrue("Expected status code is 400 or 409 if conflict but was $statusCode")
-                        { statusCode in listOf(400,409) }
-                    }
-            )
-        }
-
-        return dynamicNodes
-    }
-
-    @TestFactory
-    fun runInvalidSyncDeleteTest(): List<DynamicNode> {
-
-        val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
-        val service = catalog.services.first()
-        val plan = service.plans.first()
-        val instanceId = UUID.randomUUID().toString()
-
-        val dynamicNodes = mutableListOf<DynamicNode>()
-
-        listOf(
-                TestCase(
-                        message = "should reject if service_id is missing",
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                service_id = null,
-                                plan_id = plan.id
-                        )
-                ),
-                TestCase(
-                        message = "should reject if plan_id is missing",
-                        requestBody = ProvisionBody.ValidProvisioning(
-                                service_id = service.id,
-                                plan_id = null
-                        )
-                )
-        ).forEach {
-            dynamicNodes.add(dynamicTest("DELETE ${it.message}")
-            {
-                val provisionBody = it.requestBody
-
-                val statusCode = provisionRequestRunner.runDeleteProvisionRequestAsync(
-                        serviceId = provisionBody.service_id,
-                        planId = provisionBody.plan_id,
-                        instanceId = instanceId
-                )
-                assertTrue("Should decline a invalid DELETE request with 400 but was $statusCode") { statusCode == 400 }
-            }
-            )
-        }
-
-        return dynamicNodes
-    }
+//
+//    @TestFactory
+//    fun runInvalidSyncPutTest(): List<DynamicNode> {
+//
+//        val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
+//        val service = catalog.services.first()
+//        val plan = service.plans.first()
+//        val instanceId = UUID.randomUUID().toString()
+//
+//        val dynamicNodes = mutableListOf<DynamicNode>()
+//
+//        listOf(
+//                TestCase(
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                service_id = null,
+//                                plan_id = plan.id
+//                        ),
+//                        message = "should reject if missing service_id"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                service_id = service.id,
+//                                plan_id = null
+//                        ),
+//                        message = "should reject if missing plan_id"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.NoServiceFieldProvisioning(
+//                                service
+//                        ),
+//                        message = "should reject if missing service_id field"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.NoPlanFieldProvisioning(
+//                                plan
+//                        ),
+//                        message = "should reject if missing plan_id field"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.NoSpaceFieldProvisioning(
+//                                service_id =UUID.randomUUID().toString(),
+//                                plan_id = plan.id
+//                        ),
+//                        message = "should reject if service_id doesn't exist in the service"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.NoOrgFieldProvisioning(
+//                                service_id =service.id,
+//                                plan_id = UUID.randomUUID().toString()
+//                        ),
+//                        message = "should reject if plan_id doesn't exist in the service"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                "Invalid", plan.id
+//                        ),
+//                        message = "should reject if service_id is Invalid"
+//                ),
+//                TestCase(
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                service.id, "Invalid"
+//                        ),
+//                        message = "should reject if plan_id is Invalid"
+//                )
+//        ).forEach {
+//            dynamicNodes.add(
+//                    DynamicTest.dynamicTest("PUT ${it.message}") {
+//                        val statusCode = provisionRequestRunner.runPutProvisionRequestAsync(instanceId, it.requestBody)
+//                        assertTrue("Expected status code is 400 or 409 if conflict but was $statusCode")
+//                        { statusCode in listOf(400,409) }
+//                    }
+//            )
+//        }
+//
+//        return dynamicNodes
+//    }
+//
+//    @TestFactory
+//    fun runInvalidSyncDeleteTest(): List<DynamicNode> {
+//
+//        val catalog = configuration.initCustomCatalog() ?: catalogRequestRunner.correctRequest()
+//        val service = catalog.services.first()
+//        val plan = service.plans.first()
+//        val instanceId = UUID.randomUUID().toString()
+//
+//        val dynamicNodes = mutableListOf<DynamicNode>()
+//
+//        listOf(
+//                TestCase(
+//                        message = "should reject if service_id is missing",
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                service_id = null,
+//                                plan_id = plan.id
+//                        )
+//                ),
+//                TestCase(
+//                        message = "should reject if plan_id is missing",
+//                        requestBody = ProvisionBody.ValidProvisioning(
+//                                service_id = service.id,
+//                                plan_id = null
+//                        )
+//                )
+//        ).forEach {
+//            dynamicNodes.add(dynamicTest("DELETE ${it.message}")
+//            {
+//                val provisionBody = it.requestBody
+//
+//                val statusCode = provisionRequestRunner.runDeleteProvisionRequestAsync(
+//                        serviceId = provisionBody.service_id,
+//                        planId = provisionBody.plan_id,
+//                        instanceId = instanceId
+//                )
+//                assertTrue("Should decline a invalid DELETE request with 400 but was $statusCode") { statusCode == 400 }
+//            }
+//            )
+//        }
+//
+//        return dynamicNodes
+//    }
 }

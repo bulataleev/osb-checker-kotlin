@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import de.evoila.osb.checker.response.Plan
 import de.evoila.osb.checker.response.Service
 import java.util.*
+import javax.security.auth.login.Configuration
 import kotlin.collections.HashMap
 
 abstract class ProvisionBody : RequestBody {
@@ -30,7 +31,6 @@ abstract class ProvisionBody : RequestBody {
             var plan_id: String?,
             var organization_guid: String? = UUID.randomUUID().toString(),
             var space_guid: String? = UUID.randomUUID().toString(),
-//            @JsonInclude(JsonInclude.Include.NON_NULL)
             val parameters: HashMap<String, Any?> = hashMapOf("services" to
                     arrayOf(mapOf("applicationName" to "online-delivery",
                             "serviceName" to "order-service",
