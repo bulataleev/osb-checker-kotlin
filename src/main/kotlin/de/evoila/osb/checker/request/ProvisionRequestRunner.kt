@@ -16,7 +16,7 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
 
   fun runFetchProvisionRequestSync(instanceId: String): Int {
     return RestAssured.with()
-            .log().ifValidationFails()
+            .log().all()
             .header(Header("X-Broker-API-Version", configuration.apiVersion))
             .header(Header("Authorization", configuration.correctToken))
             .contentType(ContentType.JSON)
@@ -55,7 +55,7 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
 
   fun runPutProvisionRequestSync(instanceId: String, requestBody: RequestBody): Int {
     return RestAssured.with()
-        .log().ifValidationFails()
+        .log().all()
         .header(Header("X-Broker-API-Version", configuration.apiVersion))
         .header(Header("Authorization", configuration.correctToken))
         .contentType(ContentType.JSON)
