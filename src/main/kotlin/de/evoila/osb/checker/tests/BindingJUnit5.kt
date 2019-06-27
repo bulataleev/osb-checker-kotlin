@@ -40,6 +40,8 @@ class BindingJUnit5 : TestBase() {
                         ?: configuration.usingAppGuid
 
                 val provision = ProvisionBody.ValidProvisioning(service, plan)
+                val provisionWithParams = ProvisionBody.ValidProvisioningWithParams(service, plan)
+
                 val binding = if (needsAppGuid) BindingBody.ValidBindingWithAppGuid(service.id, plan.id) else BindingBody.ValidBinding(service.id, plan.id)
 
 
@@ -55,7 +57,7 @@ class BindingJUnit5 : TestBase() {
                     }
                 }
 
-                val testContainers = mutableListOf(validProvisionContainer(instanceId, plan.name, provision,
+                val testContainers = mutableListOf(validProvisionContainer(instanceId, plan.name, provisionWithParams,
                         service.instancesRetrievable ?: false))
 
                 val bindable = plan.bindable ?: service.bindable
@@ -89,13 +91,16 @@ class BindingJUnit5 : TestBase() {
         }
 
         val provision = ProvisionBody.ValidProvisioning(catalog.services.first(), plan)
+
+        val provisionWithParams = ProvisionBody.ValidProvisioningWithParams(service, plan)
+
         val instanceId = UUID.randomUUID().toString()
         val bindingId = UUID.randomUUID().toString()
 
         val dynamicNodes = mutableListOf<DynamicNode>()
 
         dynamicNodes.add(
-                validProvisionContainer(instanceId, plan.name, provision, service.instancesRetrievable ?: false)
+                validProvisionContainer(instanceId, plan.name, provisionWithParams, service.instancesRetrievable ?: false)
         )
 
         val invalidBindings = mutableListOf<DynamicNode>()
@@ -198,7 +203,7 @@ class BindingJUnit5 : TestBase() {
         }
     }
 
-    private fun validRetrievableInstanceContainer(instanceId: String, provision: ProvisionBody.ValidProvisioning, isRetrievable: Boolean): DynamicTest {
+    private fun validRetrievableInstanceContainer(instanceId: String, provision: ProvisionBody.ValidProvisioningWithParams, isRetrievable: Boolean): DynamicTest {
 
         return dynamicTest("Running valid GET for retrievable service instance") {
 
@@ -214,7 +219,7 @@ class BindingJUnit5 : TestBase() {
         }
     }
 
-    private fun validProvisionContainer(instanceId: String, planName: String, provision: ProvisionBody.ValidProvisioning, isRetrievable: Boolean): DynamicContainer {
+    private fun validProvisionContainer(instanceId: String, planName: String, provision: ProvisionBody.ValidProvisioningWithParams, isRetrievable: Boolean): DynamicContainer {
 
         val provisionTests = listOf(
                 dynamicTest("Running valid PUT provision with instanceId $instanceId for service ${provision.service_id} and plan $planName id: ${provision.plan_id}") {

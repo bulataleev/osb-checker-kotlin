@@ -41,7 +41,7 @@ class ProvisionJUnit5 : TestBase() {
                 dynamicContainer("should handle sync requests correctly", listOf(
                         dynamicTest("Sync PUT request") {
 
-                            println(" ::: Body request values ::: "+provisionRequestBody.parameters.values.toString())
+
                             val statusCodePut = provisionRequestRunner.runPutProvisionRequestSync(instanceId, provisionRequestBody)
                             print(" ::: BOdyRequest :::  " +  provisionRequestBody)
                             assertTrue("Should return  201 in case of a sync service broker or 200 if it's already existing but it was $statusCodePut.")
