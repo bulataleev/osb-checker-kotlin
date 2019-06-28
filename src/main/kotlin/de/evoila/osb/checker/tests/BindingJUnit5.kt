@@ -7,6 +7,8 @@ import de.evoila.osb.checker.request.bodies.BindingBody
 import de.evoila.osb.checker.request.bodies.ProvisionBody
 import de.evoila.osb.checker.response.Plan
 import de.evoila.osb.checker.response.Service
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DynamicContainer
 import org.junit.jupiter.api.DynamicContainer.dynamicContainer
 import org.junit.jupiter.api.DynamicNode
@@ -14,9 +16,8 @@ import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.DynamicTest.dynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.springframework.beans.factory.annotation.Autowired
-import java.util.*
-import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
+import java.util.*
 
 class BindingJUnit5 : TestBase() {
 

@@ -7,8 +7,10 @@ import io.restassured.http.ContentType
 import io.restassured.http.Header
 import io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath
 import org.springframework.stereotype.Service
+import org.springframework.test.context.ContextConfiguration
 
 @Service
+
 class CatalogRequestRunner(
     val configuration: Configuration
 ) {

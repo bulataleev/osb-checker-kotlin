@@ -7,6 +7,7 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.http.Header
 import io.restassured.module.jsv.JsonSchemaValidator
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.springframework.stereotype.Service
 import kotlin.test.assertTrue
 
@@ -89,6 +90,7 @@ class BindingRequestRunner(
       ""
     }
   }
+
 
   fun runDeleteBindingRequest(serviceId: String?, planId: String?, instanceId: String, bindingId: String): Int {
 

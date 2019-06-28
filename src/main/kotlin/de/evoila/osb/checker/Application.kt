@@ -22,7 +22,9 @@ import java.util.logging.Level
 @SpringBootApplication
 class Application
 
+
 fun main(args: Array<String>) {
+
 
     val options = Options()
             .apply {
@@ -116,3 +118,4 @@ fun main(args: Array<String>) {
             summaryGenerator.summary.failures.size
     )
 }
+

@@ -32,6 +32,12 @@ apply plugin: "io.spring.dependency-management"
 apply plugin: "com.adarshr.test-logger"
 apply plugin: "project-report"
 apply plugin: 'org.junit.platform.gradle.plugin'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+
+// artifactId is taken by default, from folder name
+version = '1.0'
 
 sourceCompatibility = 1.8
 
@@ -53,12 +59,19 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-test-junit")
     compile("org.springframework.boot:spring-boot-starter-test")
     compile('org.junit.platform:junit-platform-launcher:1.2.0')
+    compile ('commons-lang:commons-lang:2.3')
 
     compile('org.junit.jupiter:junit-jupiter-api:5.2.0')
     runtime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
     testCompile('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+    testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+    testRuntime('org.junit.jupiter:junit-jupiter-api:5.2.0')
 
 
+}
+
+test {
+    useJUnitPlatform()
 }
 
 compileKotlin {
