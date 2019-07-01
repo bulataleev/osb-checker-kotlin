@@ -1,7 +1,8 @@
 package de.evoila.osb.checker.util
 
-import com.google.common.collect.Queues
 
+
+import jersey.repackaged.com.google.common.collect.Queues
 import org.junit.platform.engine.TestExecutionResult
 import org.junit.platform.engine.reporting.ReportEntry
 import org.junit.platform.launcher.TestExecutionListener
