@@ -8,8 +8,12 @@ import io.restassured.RestAssured
 import io.restassured.http.ContentType
 import io.restassured.http.Header
 import io.restassured.module.jsv.JsonSchemaValidator
+import org.hamcrest.CoreMatchers
 import org.springframework.stereotype.Service
+import java.net.URL
 import kotlin.test.assertTrue
+import khttp.get
+
 
 @Service
 class ProvisionRequestRunner( val configuration: Configuration ) {
@@ -66,6 +70,19 @@ class ProvisionRequestRunner( val configuration: Configuration ) {
         .assertThat()
         .extract()
         .statusCode()
+  }
+  fun runPutProvisionRequestResponseSync(instanceId: String, requestBody: RequestBody): String {
+    return RestAssured.with()
+            .log().all()
+            .header(Header("X-Broker-API-Version", configuration.apiVersion))
+            .header(Header("Authorization", configuration.correctToken))
+            .contentType(ContentType.JSON)
+            .body(requestBody)
+            .put("/v2/service_instances/$instanceId")
+            .then().extract().jsonPath().getString("dashboard_url")
+  }
+  fun getDashBoard(dashBoardUrl: String): Int {
+    return get(dashBoardUrl).statusCode
   }
 
   fun runPutProvisionRequestAsync(instanceId: String, requestBody: RequestBody): Int {
